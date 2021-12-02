@@ -1,5 +1,8 @@
 from app import dotDict, level, logging
 
+### INIT
+Day = 2
+
 """
 --- Day 2: Dive! ---
 Now, you need to figure out how to pilot this thing.
@@ -32,13 +35,14 @@ After following these instructions, you would have a horizontal position of 15 a
 Calculate the horizontal position and depth you would have after following the planned course. What do you get if you multiply your final horizontal position by your final depth?
 """
 
+with open('Day2.txt') as f:
+    dataset = f.read()
+
+# split in to list, ignoring blank lines
+positionReadings = [{i.split(' ')[0]: int(i.split(' ')[1])} for i in dataset.split("\n") if i]
+
 # read set as long string to be able to split in to list of ints below
 def Part1():
-    with open('Day2.txt') as f:
-        dataset = f.read()
-
-    # split in to list, ignoring blank lines
-    positionReadings = [{i.split(' ')[0]: int(i.split(' ')[1])} for i in dataset.split("\n") if i]
 
     position = dotDict({'x': 0, 'y': 0})
     for r in positionReadings:
@@ -47,6 +51,7 @@ def Part1():
         if list(r)[0] == 'up': position.y -= list(r.values())[0]
 
         # debug
+        logging.debug(f'reading: {r}, position: {position}')
 
     # display result for this section
     return position.x * position.y
@@ -93,10 +98,11 @@ def Part2():
         if list(r)[0] == 'up': position.aim -= list(r.values())[0]
 
         # debug
+        logging.debug(f'reading: {r}, position: {position}')
 
     # display result for this section
     return position.x * position.y
 
 if __name__ == "__main__":
-    print(f'Day2, Part1: {Part1()}')
-    print(f'Day2, Part2: {Part2()}')
+    print(f'Day{Day}, Part1: {Part1()}')
+    print(f'Day{Day}, Part2: {Part2()}')

@@ -1,11 +1,7 @@
-import logging
-level = logging.INFO
-logging.basicConfig(format="%(asctime)s %(levelname)s %(threadName)s %(name)s %(message)s", datefmt='%m-%d %H:%M', level=level)
+from app import dotDict, level, logging
 
-class AttrDict(dict):
-    def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
-        self.__dict__ = self
+### INIT
+Day = 1
 
 """
 --- Day 1: Sonar Sweep ---
@@ -52,22 +48,25 @@ In this example, there are 7 measurements that are larger than the previous meas
 How many measurements are larger than the previous measurement?
 """
 
-# read set as long string to be able to split in to list of ints below
 with open('Day1.txt') as f:
     dataset = f.read()
 
 # split in to list, ignoring blank lines
 sonarReadings = [int(i) for i in dataset.split("\n") if i]
 
-# find number of measurements larger than previous
-isLarger = 0
-for sr in range(len(sonarReadings)):
-    if sr > 0 and sonarReadings[sr] > reading: 
-        isLarger += 1
-    reading = sonarReadings[sr]
+# read set as long string to be able to split in to list of ints below
+def Part1():
 
-# display result for this section
-print(isLarger)
+    # find number of measurements larger than previous
+    largerThan = 0
+    for sr in range(len(sonarReadings)):
+        if sr > 0 and sonarReadings[sr] > reading: 
+            largerThan += 1
+        reading = sonarReadings[sr]
+        logging.debug(f'{sr}: {sonarReadings[sr]}, {reading} ({largerThan})')
+
+    # display result for this section
+    return largerThan
 
 ###
 ### PART 2
@@ -108,15 +107,20 @@ Consider sums of a three-measurement sliding window. How many sums are larger th
 """
 
 # find number of measurements larger than previous
-isLarger = 0
-windowSize = 3
-for sr in range(len(sonarReadings)-windowSize+1):
-    if sr > 0 and sum(sonarReadings[sr:sr+windowSize]) > reading: 
-        isLarger += 1
-    reading = sum(sonarReadings[sr:sr+windowSize])
-    
-    # debug
-    logging.debug(f'{sr}: {sonarReadings[sr:sr+windowSize]}, {reading} ({isLarger})')
+def Part2():
+    largerThan = 0
+    windowSize = 3
+    for sr in range(len(sonarReadings)-windowSize+1):
+        if sr > 0 and sum(sonarReadings[sr:sr+windowSize]) > reading: 
+            largerThan += 1
+        reading = sum(sonarReadings[sr:sr+windowSize])
+        
+        # debug
+        logging.debug(f'{sr}: {sonarReadings[sr:sr+windowSize]}, {reading} ({largerThan})')
 
-# display result for this section
-print(isLarger)
+    # display result for this section
+    return largerThan
+
+if __name__ == "__main__":
+    print(f'Day{Day}, Part1: {Part1()}')
+    print(f'Day{Day}, Part2: {Part2()}')
