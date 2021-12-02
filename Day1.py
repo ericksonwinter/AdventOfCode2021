@@ -1,4 +1,11 @@
-import os
+import logging
+level = logging.INFO
+logging.basicConfig(format="%(asctime)s %(levelname)s %(threadName)s %(name)s %(message)s", datefmt='%m-%d %H:%M', level=level)
+
+class AttrDict(dict):
+    def __init__(self, *args, **kwargs):
+        super(AttrDict, self).__init__(*args, **kwargs)
+        self.__dict__ = self
 
 """
 --- Day 1: Sonar Sweep ---
@@ -99,3 +106,17 @@ In this example, there are 5 sums that are larger than the previous sum.
 
 Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?
 """
+
+# find number of measurements larger than previous
+isLarger = 0
+windowSize = 3
+for sr in range(len(sonarReadings)-windowSize+1):
+    if sr > 0 and sum(sonarReadings[sr:sr+windowSize]) > reading: 
+        isLarger += 1
+    reading = sum(sonarReadings[sr:sr+windowSize])
+    
+    # debug
+    logging.debug(f'{sr}: {sonarReadings[sr:sr+windowSize]}, {reading} ({isLarger})')
+
+# display result for this section
+print(isLarger)
